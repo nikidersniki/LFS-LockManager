@@ -12,7 +12,7 @@ import subprocess
 #def say_hello_py(x):
 #    print('Hello from %s' % x)
 #
-## Initialize and start the Eel application
+# Initialize and start the Eel application
 #eel.start('index.html', mode='None', port=1000)
 def pathIsRepo():
     for i in os.listdir():
@@ -26,8 +26,13 @@ def initialize():
     #change to repo root
     os.chdir(path)
     if(pathIsRepo):
-        origin = subprocess.run(['git config --get remote.origin.url'])
-        print(origin)
+        origin = subprocess.run(['git', 'ls-remote', '--get-url'], capture_output=True, text=True).stdout.strip("\n")
+        parts = origin.split("/")
+        reponame = parts[4].strip(".git")
+    print("Your active repo is now " + reponame)
+    locked = subprocess.run(['git', 'lfs', 'locks'], capture_output=True, text=True).stdout.split("\n")
+    print(locked)
+    
 initialize()
     
 
