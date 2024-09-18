@@ -1,38 +1,40 @@
 import eel
 import os
-import sqlite3
 import subprocess
+import tkinter 
+import tkinter.filedialog as filedialog
 
 
-#
-#dirname = os.path.dirname(__file__)
-#eel.init(os.path.join(dirname, "web/"), allowed_extensions=['.js', '.html'])
-#
-#@eel.expose
-#def say_hello_py(x):
-#    print('Hello from %s' % x)
-#
-# Initialize and start the Eel application
-#eel.start('index.html', mode='None', port=1000)
+eel.init(("web"))
+
 def pathIsRepo():
     for i in os.listdir():
         if i == ".git":
             return True
         else:
             return False
-def initialize():
-    print("Enter your repositorys directory:")
-    path = input()
-    #change to repo root
+
+@eel.expose
+def selectFolder():
+    root = tkinter.Tk()
+    root.attributes("-topmost", True)
+    root.withdraw()
+    directory_path = filedialog.askdirectory()
+    eel.setDirText(directory_path)
+
+@eel.expose
+def initialize(path):
     os.chdir(path)
     if(pathIsRepo):
         origin = subprocess.run(['git', 'ls-remote', '--get-url'], capture_output=True, text=True).stdout.strip("\n")
         parts = origin.split("/")
         reponame = parts[4].strip(".git")
-    print("Your active repo is now " + reponame)
-    locked = subprocess.run(['git', 'lfs', 'locks'], capture_output=True, text=True).stdout.split("\n")
-    print(locked)
-    
-initialize()
-    
+        eel.SetTitle(reponame)
+        locked = subprocess.run(['git', 'lfs', 'locks'], capture_output=True, text=True).stdout.split("\n")
+        for i in locked:
+            p = i.split("\t")
+            eel.AddFile(p)
+            #print(p)
+
+eel.start('index.html', port=8000, size=(500, 600))
 

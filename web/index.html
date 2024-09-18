@@ -1,22 +1,38 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Hello, World!</title>
+    <title>Github Lock Manager -</title>
 
     <!-- Include eel.js - note this file doesn't exist in the 'web' directory -->
     <script type="text/javascript" src="eel.js"></script>
     <script type="text/javascript">
-      eel.expose(say_hello_js); // Expose this function to Python
-      function say_hello_js(x) {
-        console.log("Hello from " + x);
-      }
-
-      say_hello_js("Javascript World!");
-      eel.say_hello_py("Javascript World!"); // Call a Python function
     </script>
   </head>
-
   <body>
-    Hello, World!
+    <button class="items" onclick="select()">Choose folder</button>
+    <input type="text" id="pathBox">
+    <button onclick="eel.initialize(document.getElementById('pathBox').value);">Initialize</button>
+    <div id="lockList"></div>
+    <script>
+      function setDirText(path){
+        document.getElementById("pathBox").value = path;
+      }
+      eel.expose(setDirText);
+
+      function select(){
+        eel.selectFolder();
+      } 
+
+      function AddFile(x) {
+        console.log(x)
+      }
+
+      eel.expose(AddFile);
+
+      function SetTitle(name){
+        document.querySelector("title").innerHTML.append(name);
+      }
+      eel.expose(SetTitle);
+    </script>
   </body>
 </html>
