@@ -1,19 +1,34 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Github Lock Manager -</title>
+    <title>Github Lock Manager</title>
 
     <!-- Include eel.js - note this file doesn't exist in the 'web' directory -->
     <script type="text/javascript" src="eel.js"></script>
-    <script type="text/javascript">
-    </script>
+    <script type="text/javascript"></script>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <button class="items" onclick="select()">Choose folder</button>
-    <input type="text" id="pathBox">
-    <button onclick="eel.initialize(document.getElementById('pathBox').value);">Initialize</button>
+    <div id="initNav">
+      <button class="Button RepoPathSelect" onclick="select()">Choose folder</button>
+      <input type="text" id="pathBox" class="RepoPathSelect">
+      <button onclick="eel.initialize(document.getElementById('pathBox').value);" class="Button RepoPathSelect">Initialize</button>
+    </div>
+    <div id="nav">
+      <button class="Button" id="Settings" onclick=""></button>
+      <input type="text" id="SearchBox" placeholder="search here" onkeydown="eel.Search(this.value)" onkeyup="eel.Search(this.value)" onfocusout="document.getElementById('SearchBoxDrop').style.display='none'">
+      <button class="Button" id="AddFile" onclick="eel.SelectFileToAdd()">Add File</button>
+    </div> 
+    <div id="SearchBoxDrop"></div>
+    </div>
+    <div id="sbsbar"><div id="listHeader"><div>ID</div><div>Name</div><div id="headerFileThingi">File</div></div><button class="Button" id="Refresh" onclick="reloadJS()"></button></div>
+  
     <div id="lockList"></div>
     <script>
+      //force resize
+      window.addEventListener("resize", function(){
+        window.resizeTo(800, 610);
+      });
       function setDirText(path){
         document.getElementById("pathBox").value = path;
       }
@@ -24,15 +39,45 @@
       } 
 
       function AddFile(x) {
-        console.log(x)
+        list = document.getElementById("lockList");
+        entry = document.createElement("div");
+        entry.innerHTML = "<div class='id'>"+x[2]+"</div><div class='name'>"+x[1]+"</div><div class='fileName cbox'>"+x[0]+"</div><div class='remove' onclick='eel.remove(`"+x[0]+"`)'></div>";
+        entry.classList.add("file");
+        list.append(entry);
       }
 
       eel.expose(AddFile);
 
       function SetTitle(name){
-        document.querySelector("title").innerHTML.append(name);
+        title = "Github Lock Manager";
+        document.querySelector("title").innerHTML = title + " - " + name;
       }
       eel.expose(SetTitle);
+
+      function ToggleButtons(){
+        document.querySelector("#nav").style.display = "flex";
+        document.querySelector("#initNav").style.display = "none";
+      }
+      eel.expose(ToggleButtons);
+
+      function reloadJS(){
+        list = document.getElementById("lockList").innerHTML = "";
+        eel.reloadPY()
+      }
+      eel.expose(reloadJS);
+
+      function populateSearch(results){
+        search = document.getElementById("SearchBoxDrop");   
+        search.innerHTML = "";
+        search.style.display = "flex";
+        results.forEach(element => {
+          item = document.createElement("div");
+          item.innerHTML = element;
+          item.classList.add("searchEntry");
+          search.append(item);
+        });
+      }
+      eel.expose(populateSearch)
     </script>
   </body>
 </html>
