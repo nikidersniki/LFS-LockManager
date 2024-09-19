@@ -92,7 +92,7 @@ body{
 .remove{
     background-color: #424a52;
     border-radius: 4px;
-    width: 20px;
+    width: 25px;
     height: 20px;
     background-image: url(remove.svg);
     background-size: cover;
@@ -117,7 +117,7 @@ body{
 
 }
 #headerFileThingi{
-    margin-right: 150px;
+    margin-right: 400px;
 }
 #Refresh{
     background-image: url(refresh.svg);
@@ -130,8 +130,8 @@ body{
     display: flex;
     justify-content: space-between;
 }
-#Settings{
-    background-image: url(settings.svg);
+#logout{
+    background-image: url(logout.svg);
     background-size: cover;
     height: 30px;
     width: 30px;

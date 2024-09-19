@@ -4,10 +4,25 @@ import subprocess
 import tkinter 
 import tkinter.filedialog as filedialog
 import glob
-import re
+from pathlib import Path
+import json
 
 
 eel.init(("web"))
+
+def loadOnStartup():
+    DocumentFolder = Path.home() / 'Documents'
+    configExists = os.path.exists(str(DocumentFolder) + "\GHLM\Locks.json")
+    if configExists == True:
+        path = str(DocumentFolder) + "\GHLM\Locks.json"
+        print(path)
+        f = open(path, "r")
+        jsonStr = f.read()
+        jsonA = json.loads(jsonStr)
+        initialize(jsonA["github"])
+        print(jsonA["github"])
+    else:
+        return 0
 
 def pathIsRepo():
     for i in os.listdir():
@@ -40,6 +55,22 @@ def initialize(path):
                 p = i.split("\t")
                 eel.AddFile(p)
                 print(p)
+        DocumentFolder = Path.home() / 'Documents'
+        print(str(DocumentFolder) + "\GHLM\Locks.json")
+        configExists = os.path.exists(str(DocumentFolder) + "\GHLM\Locks.json")
+        if not configExists:
+            if not os.path.exists(str(DocumentFolder) + "\GHLM"):
+                os.makedirs(str(DocumentFolder) + "\GHLM")
+            f = open(str(DocumentFolder) + "\GHLM\Locks.json", "a")
+            dog_data = {
+              "github": path,
+              "type": "Unreal",
+            }
+            dog_data = json.dumps(dog_data)
+            print(dog_data)
+            f.write(dog_data)
+            f.close()
+
         eel.ToggleButtons()
     else:
         return 0
@@ -61,6 +92,7 @@ def reloadPY():
 
 def lockFile(filepath):
     result = subprocess.run(['git', 'lfs', 'lock', filepath], capture_output=True, text=True).stdout.split("\n")
+    eel.reloadJS()
     print(result)
 
 @eel.expose
@@ -71,17 +103,32 @@ def SelectFileToAdd():
     file = filedialog.askopenfile()
     print(file.name)
     lockFile(file.name)
-    eel.reloadJS()
+
+@eel.expose
+def AddFile(filename):
+    lockFile(filename)
+    eel.cSearch()
+    
 
 @eel.expose
 def Search(name):
-    path = os.getcwd()
-    paths = [p for p in glob.glob(path +'/**/'+ name + '*', recursive=True) if os.path.isfile(p)]
-    stripped=[]
-    for pathe in paths:
-        noabsolute = pathe.lstrip(path)
-        stripped.append(noabsolute)
-    eel.populateSearch(stripped)
+    if name == "":
+        eel.cSearch()
+    else:
+        path = os.getcwd()
+        paths = [p for p in glob.glob(path +'/**/'+ name + '*', recursive=True) if os.path.isfile(p)]
+        stripped=[]
+        for pathe in paths:
+            noabsolute = pathe.lstrip(path)
+            stripped.append(noabsolute)
+        eel.populateSearch(stripped)
+@eel.expose
+def logout():
+    DocumentFolder = Path.home() / 'Documents'
+    os.remove(str(DocumentFolder) + "\GHLM\Locks.json")  
+    eel.reloadApp()
+
+loadOnStartup()
 
 eel.start('index.html', port=8000, size=(800, 610))
 

@@ -15,11 +15,11 @@
       <button onclick="eel.initialize(document.getElementById('pathBox').value);" class="Button RepoPathSelect">Initialize</button>
     </div>
     <div id="nav">
-      <button class="Button" id="Settings" onclick=""></button>
-      <input type="text" id="SearchBox" placeholder="search here" onkeydown="eel.Search(this.value)" onkeyup="eel.Search(this.value)" onfocusout="document.getElementById('SearchBoxDrop').style.display='none'">
+      <button class="Button" id="logout" onclick="eel.logout()"></button>
+      <input type="text" id="SearchBox" placeholder="search here" onkeydown="eel.Search(this.value)" onkeyup="eel.Search(this.value)">
       <button class="Button" id="AddFile" onclick="eel.SelectFileToAdd()">Add File</button>
     </div> 
-    <div id="SearchBoxDrop"></div>
+    <div id="SearchBoxDrop" onfocusout="document.getElementById('SearchBoxDrop').style.display='none'"></div>
     </div>
     <div id="sbsbar"><div id="listHeader"><div>ID</div><div>Name</div><div id="headerFileThingi">File</div></div><button class="Button" id="Refresh" onclick="reloadJS()"></button></div>
   
@@ -72,12 +72,21 @@
         search.style.display = "flex";
         results.forEach(element => {
           item = document.createElement("div");
-          item.innerHTML = element;
+          item.innerHTML = "<div onclick='eel.AddFile(`"+element+"`)'>"+element+"</div>";
           item.classList.add("searchEntry");
           search.append(item);
         });
       }
       eel.expose(populateSearch)
+      function cSearch(){
+        search = document.getElementById("SearchBoxDrop");   
+        search.style.display = "none";
+      }
+      eel.expose(cSearch);
+      function reloadApp(){
+        location.reload();
+      }
+      eel.expose(reloadApp);
     </script>
   </body>
 </html>
