@@ -106,6 +106,7 @@ def SelectFileToAdd():
 
 @eel.expose
 def AddFile(filename):
+    print(filename)
     lockFile(filename)
     eel.cSearch()
     
@@ -120,8 +121,10 @@ def Search(name):
         stripped=[]
         for pathe in paths:
             noabsolute = pathe.lstrip(path)
+            noabsolute = noabsolute.replace("\\", "/")
             stripped.append(noabsolute)
         eel.populateSearch(stripped)
+
 @eel.expose
 def logout():
     DocumentFolder = Path.home() / 'Documents'
