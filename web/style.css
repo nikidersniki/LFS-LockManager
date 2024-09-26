@@ -8,25 +8,25 @@
 }
 body{
     font-family: main;
-    background-color: #24292e;
+    background-color: var(--bg1);
 }
 ::-webkit-scrollbar {
     width: 5px;
 }
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px #24292e; 
+  box-shadow: inset 0 0 5px var(--bg1); 
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #31373d; 
+  background: var(--bg4); 
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #424a52; 
+  background: var(--bg3); 
 }
 
 #lockList{
-    background-color: #2b3137;
+    background-color: var(--bg2);
     display:flex;
     flex-direction: column;
     padding: 5px;
@@ -36,7 +36,7 @@ body{
     overflow-y: scroll;
 }
 .file{
-    background-color: #31373d;
+    background-color: var(--bg2);
     display: flex;
     flex-direction: row;
     width: calc(100%-10px);
@@ -44,22 +44,22 @@ body{
     padding: 5px;
     margin-bottom: 5px;
     text-align: left;
-    border: 1px solid #424a52;
-    color: #fafbfc;
+    border: 1px solid var(--bg3);
+    color: var(--text);
     font-size: 14px;
 }
 .Button{
     font-family: main;
-    background-color: #31373d;
-    border: 1px solid #424a52;
-    color: #fafbfc;
+    background-color: var(--bg2);
+    border: 1px solid var(--bg3);
+    color: var(--text);
     border-radius: 5px;
     width: calc(100%-10px);
     padding: 5px;
 
 }
 .Button:hover{
-    background-color:#5b6570;
+    background-color:var(--bg4);
 }
 #nav{
     display: none;
@@ -76,8 +76,8 @@ body{
     
 }
 #pathBox{
-    background-color: #31373d;
-    border: 1px solid #424a52;
+    background-color: var(--bg2);
+    border: 1px solid var(--bg3);
     color: #fafbfc;
     border-radius: 5px;
     width: calc(100%-10px);
@@ -90,7 +90,7 @@ body{
     display:block;
 }
 .remove{
-    background-color: #424a52;
+    background-color: var(--bg3);
     border-radius: 4px;
     width: 25px;
     height: 20px;
@@ -98,20 +98,21 @@ body{
     background-size: cover;
 }
 .remove:hover{
-    background-color: #5b6570;
+    background-color: var(--bg4);
     border-radius: 4px;
 }
 #listHeader{
     width: 90%;
     font-family: fat;
-    background-color: #2b3137;
+    background-color: var(--bg2);
     display:flex;
     flex-direction: row;
     justify-content: space-between;
     margin-top: 10px;
-    color: #fafbfc7a;
+    color: var(--text2);
     border-radius: 5px;
     padding: 2px 10px 0 10px;
+    padding-top: 4px;
     text-decoration: underline;
     font-size: 14px;
 
@@ -137,9 +138,9 @@ body{
     width: 30px;
 }
 #SearchBox{
-    background-color: #31373d;
-    border: 1px solid #424a52;
-    color: #fafbfc;
+    background-color: var(--bg2);
+    border: 1px solid var(--bg3);
+    color: var(--text);
     border-radius: 5px;
     width: calc(100%-10px);
     padding: 5px;
@@ -147,34 +148,42 @@ body{
     width: 72%;
     font-family: main;
 }
+#SearchBox::placeholder{
+    color:var(--text2);
+}
 #SearchBoxDrop{
     font-size: 12px;
-    color: #fafbfc;
+    color: var(--text);
     padding-left: 5px;
     padding-right: 5px;
-    background-color: #31373d;
-    border-left: 1px solid #424a52;
-    border-right: 1px solid #424a52;
-    border-bottom: 1px solid #424a52;
+    background-color: var(--bg2);
+    border-left: 1px solid var(--bg3);
+    border-right: 1px solid var(--bg3);
+    border-bottom: 1px solid var(--bg3);
     top:35px;
     position: fixed;
     width: 553px;
-    left:85px;
     height: auto;
+    max-height: 500px;
+    left:60px;
     display: none;
     z-index: 2;
+    overflow-y: scroll;
     flex-direction: column;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+    padding-bottom: 5px;
 }
 .searchEntry{
-    border-bottom: 1px solid #424a52;
+    padding-left: 5px;
+    border-bottom: 1px solid var(--bg3);
     padding-bottom: 5px;
     padding-top: 5px;
     border-radius: 5px;
+    word-break: break-all;
 }
 .searchEntry:hover{
-    background-color: #5b6570;
+    background-color: var(--bg4);
 }
 .cbox{
     width: calc(80%);
@@ -182,4 +191,165 @@ body{
 }
 .id{
     padding-right: 20px;
+    width: 120px;
 }
+.name{
+    width: 200px;
+}
+#CloseBtn{
+    background-image: url(close.svg);
+    background-size: cover;
+    height: 30px;
+    width: 30px;
+    position: fixed;
+    right: 5px;
+    top: 5px;
+}
+#settingsBtn{
+    background-image: url(settings.svg);
+    background-size: cover;
+    height: 30px;
+    width: 30px;
+}
+#settings{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--bg1);
+    padding-top: 35px;
+    padding-left: 10px;
+    display: none;
+
+}
+#settingsContent{
+    flex-direction: column;
+    display: flex;
+    width: calc(100% - 27px);
+    height: auto;
+    background-color: var(--bg2);
+    border-radius: 5px;
+    padding-left: 5px;
+    margin-top: 10px;
+    border:var(--border);
+}
+.settingsRow{
+    display: flex;
+    flex-direction: row;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.settingsRow div:not(.secd){
+    color:var(--text);
+    width: 60%;
+}
+
+#themeSelect{
+    background-color: var(--bg2);
+    color: var(--text);
+    border: var(--border);
+    outline: none;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+}
+
+
+.secd{
+    color:var(--text);
+    text-align: right;
+    margin-left: auto;
+    margin-right: 20px;
+    
+}
+
+  .checkbox-wrapper-7 .tgl {
+    display: none;
+  }
+  .checkbox-wrapper-7 .tgl,
+  .checkbox-wrapper-7 .tgl:after,
+  .checkbox-wrapper-7 .tgl:before,
+  .checkbox-wrapper-7 .tgl *,
+  .checkbox-wrapper-7 .tgl *:after,
+  .checkbox-wrapper-7 .tgl *:before,
+  .checkbox-wrapper-7 .tgl + .tgl-btn {
+    box-sizing: border-box;
+  }
+  .checkbox-wrapper-7 .tgl::-moz-selection,
+  .checkbox-wrapper-7 .tgl:after::-moz-selection,
+  .checkbox-wrapper-7 .tgl:before::-moz-selection,
+  .checkbox-wrapper-7 .tgl *::-moz-selection,
+  .checkbox-wrapper-7 .tgl *:after::-moz-selection,
+  .checkbox-wrapper-7 .tgl *:before::-moz-selection,
+  .checkbox-wrapper-7 .tgl + .tgl-btn::-moz-selection,
+  .checkbox-wrapper-7 .tgl::selection,
+  .checkbox-wrapper-7 .tgl:after::selection,
+  .checkbox-wrapper-7 .tgl:before::selection,
+  .checkbox-wrapper-7 .tgl *::selection,
+  .checkbox-wrapper-7 .tgl *:after::selection,
+  .checkbox-wrapper-7 .tgl *:before::selection,
+  .checkbox-wrapper-7 .tgl + .tgl-btn::selection {
+    background: none;
+  }
+  .checkbox-wrapper-7 .tgl + .tgl-btn {
+    outline: 0;
+    display: block;
+    width: 4em;
+    height: 2em;
+    position: relative;
+    cursor: pointer;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+  }
+  .checkbox-wrapper-7 .tgl + .tgl-btn:after,
+  .checkbox-wrapper-7 .tgl + .tgl-btn:before {
+    position: relative;
+    display: block;
+    content: "";
+    width: 50%;
+    height: 100%;
+  }
+  .checkbox-wrapper-7 .tgl + .tgl-btn:after {
+    left: 0;
+  }
+  .checkbox-wrapper-7 .tgl + .tgl-btn:before {
+    display: none;
+  }
+  .checkbox-wrapper-7 .tgl:checked + .tgl-btn:after {
+    left: 50%;
+  }
+
+  .checkbox-wrapper-7 .tgl-ios + .tgl-btn {
+    background: var(--bg2);
+    border-radius: 2em;
+    padding: 2px;
+    transition: all 0.4s ease;
+    border: 1px solid var(--bg4);
+  }
+  .checkbox-wrapper-7 .tgl-ios + .tgl-btn:after {
+    border-radius: 2em;
+    background: var(--bg4);
+    transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 4px 0 rgba(0, 0, 0, 0.08);
+  }
+  .checkbox-wrapper-7 .tgl-ios + .tgl-btn:hover:after {
+    will-change: padding;
+  }
+  .checkbox-wrapper-7 .tgl-ios + .tgl-btn:active {
+    box-shadow: inset 0 0 0 2em var(--bg4);
+  }
+  .checkbox-wrapper-7 .tgl-ios + .tgl-btn:active:after {
+    padding-right: 0.8em;
+  }
+  .checkbox-wrapper-7 .tgl-ios:checked + .tgl-btn {
+    background: var(--bg3);
+  }
+  .checkbox-wrapper-7 .tgl-ios:checked + .tgl-btn:active {
+    box-shadow: none;
+  }
+  .checkbox-wrapper-7 .tgl-ios:checked + .tgl-btn:active:after {
+    margin-left: -0.8em;
+  }

@@ -8,7 +8,7 @@
     <script type="text/javascript"></script>
     <link rel="stylesheet" href="style.css">
   </head>
-  <body>
+  <body oncontextmenu="return false;" onload="eel.loadOnStartup()">
     <div id="initNav">
       <button class="Button RepoPathSelect" onclick="select()">Choose folder</button>
       <input type="text" id="pathBox" class="RepoPathSelect">
@@ -18,13 +18,97 @@
       <button class="Button" id="logout" onclick="eel.logout()"></button>
       <input type="text" id="SearchBox" placeholder="search here" onkeydown="eel.Search(this.value)" onkeyup="eel.Search(this.value)">
       <button class="Button" id="AddFile" onclick="eel.SelectFileToAdd()">Add File</button>
+      <button class="Button" id="settingsBtn" onclick="Settings()"></button>
     </div> 
     <div id="SearchBoxDrop" onfocusout="document.getElementById('SearchBoxDrop').style.display='none'"></div>
     </div>
     <div id="sbsbar"><div id="listHeader"><div>ID</div><div>Name</div><div id="headerFileThingi">File</div></div><button class="Button" id="Refresh" onclick="reloadJS()"></button></div>
-  
+    <div id="settings">
+      <button class="Button" id="CloseBtn" onclick="CloseSettings()"></button>
+      <div id="settingsContent">
+      <div class="settingsRow">
+        <div>Theme:</div>
+        <select id="themeSelect" class="secd" onchange="changeTheme(this.value)">
+          <option value="0">Dark</option>
+          <option value="1">Bluish</option>
+          <option value="2">Cyberpunk</option>
+        </select>
+      </div>
+      <div class="settingsRow">
+        <div>Open Last Repo</div>
+        <div class="checkbox-wrapper-7 secd">
+          <input class="tgl tgl-ios" id="cb2-7" type="checkbox" onchange="openLastChange(this.value)"/>
+          <label class="tgl-btn" for="cb2-7">
+        </div>            
+      </div>
+      <div class="settingsRow">
+        <div>Prompt Updates</div>
+        <div class="checkbox-wrapper-7 secd">
+          <input class="tgl tgl-ios" id="cb2-8" type="checkbox"/>
+          <label class="tgl-btn" for="cb2-8">
+        </div>
+        
+      </div>
+    </div>
+    </div>
     <div id="lockList"></div>
     <script>
+      lastChanged = "True";
+      function ToggleSwitches(value){
+          lastChanged = value;
+      }
+      eel.expose(ToggleSwitches);
+      function openLastChange(value){
+        console.log(value);
+      }
+      function changeTheme(style){
+        eel.changeThemePy(style);
+      }
+      function loadStyle(style){
+        if (style == 0){
+          template =`:root{
+              --text:#fafbfc;
+              --text2:#fafbfc7a;
+              --bg1:#24292e;
+              --bg2:#31373d;
+              --bg3:#424a52;
+              --bg4:#5b6570;
+              --border: 1px solid #424a52;
+
+          }`;      
+        }
+        else if (style == 1){
+          template =`
+              :root{
+                  --text:#F1D7B7;
+                  --text2:#bec1cc;
+                  --bg1: #7C93C3;
+                  --bg2: #55679C;
+                  --bg3: #1E2A5E;
+                  --bg4: #343c5f;
+                  --border: 1px solid #1E2A5E;
+              }`;
+        }
+        else if (style == 2){
+          template =`
+              :root{
+                  --text:#ffffff;
+                  --text2:#f5f3f4;
+                  --bg1: #0b090a;
+                  --bg2: #161a1d;
+                  --bg3: #660708;
+                  --bg4: #a4161a;
+                  --border: 1px solid #660708;
+              }`;
+        }
+        document.getElementById("themeSelect").value = style;
+        newStyle = document.createElement("style");
+        newStyle.innerHTML = template;
+        head = document.head || document.getElementsByTagName('head')[0],
+        head.append(newStyle);
+      }
+      eel.expose(loadStyle);
+
       //force resize
       window.addEventListener("resize", function(){
         window.resizeTo(800, 610);
@@ -39,9 +123,21 @@
       } 
 
       function AddFile(x) {
+        ids = document.getElementsByClassName("id");
         list = document.getElementById("lockList");
         entry = document.createElement("div");
-        entry.innerHTML = "<div class='id'>"+x[2]+"</div><div class='name'>"+x[1]+"</div><div class='fileName cbox'>"+x[0]+"</div><div class='remove' onclick='eel.remove(`"+x[0]+"`)'></div>";
+        fixed = x[3].split("").reverse().join("");
+        stringArr = fixed.split("");
+        if (stringArr.length > 30){
+          toCut = stringArr.length - 30;
+        }
+        else{
+          toCut = 0;
+        }
+        console.log(toCut);
+        fixed.substr(0, toCut) + "\u2026";
+        fixed = fixed.split("").reverse().join("");
+        entry.innerHTML = "<div class='id'>"+x[2]+"</div><div class='name'>"+x[1]+"</div><div class='fileName cbox'>"+fixed+"</div><div class='remove' onclick='eel.remove(`"+x[0]+"`)'></div>";
         entry.classList.add("file");
         list.append(entry);
       }
@@ -83,10 +179,46 @@
         search.style.display = "none";
       }
       eel.expose(cSearch);
+
       function reloadApp(){
         location.reload();
       }
       eel.expose(reloadApp);
+
+      function Settings(){
+        document.getElementById("settings").style.display = "block";
+      }
+
+      function CloseSettings(){
+        document.getElementById("settings").style.display = "none";
+      }
+      //Prevent Zoom
+      (function () {
+            
+      /**
+       * Main stopscrollwheelzoom constructor
+       */
+      let SSWZ = function () {
+      
+          /**
+           * Handler for scroll- control must be pressed.
+           * @param e
+           */
+          this.keyScrollHandler = function (e) {
+              if (e.ctrlKey) {
+                  e.preventDefault();
+                  return false;
+              }
+          }
+      };
+      
+      if (window === top) {
+          let sswz = new SSWZ();
+          window.addEventListener('wheel', sswz.keyScrollHandler, { passive: false });
+      }
+      
+      })();
+      loadStyle(0)
     </script>
   </body>
 </html>
