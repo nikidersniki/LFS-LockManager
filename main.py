@@ -99,6 +99,18 @@ def remove(file):
     print(result)
 
 @eel.expose
+def removeAll():
+    locked = subprocess.run(['git', 'lfs', 'locks'], capture_output=True, text=True).stdout.split("\n")
+    for i in locked:
+        if i != "":
+            p = i.split("\t")
+            file = p[0]
+            result = subprocess.run(['git', 'lfs', 'unlock', file], capture_output=True, text=True).stdout.split("\n")
+            print(result)
+    eel.LoadingFinished()
+    eel.reloadJS()
+
+@eel.expose
 def reloadPY():
     locked = subprocess.run(['git', 'lfs', 'locks'], capture_output=True, text=True).stdout.split("\n")
     for i in locked:

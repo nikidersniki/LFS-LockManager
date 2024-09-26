@@ -22,7 +22,7 @@
     </div> 
     <div id="SearchBoxDrop" onfocusout="document.getElementById('SearchBoxDrop').style.display='none'"></div>
     </div>
-    <div id="sbsbar"><div id="listHeader"><div>ID</div><div>Name</div><div id="headerFileThingi">File</div></div><button class="Button" id="Refresh" onclick="reloadJS()"></button></div>
+    <div id="sbsbar"><div id="listHeader"><div>ID</div><div>Name</div><div id="headerFileThingi">File</div></div><button class="Button" id="RemoveAll" onclick="removeAll()">Remove all</button><button class="Button" id="Refresh" onclick="reloadJS()"></button></div>
     <div id="settings">
       <button class="Button" id="CloseBtn" onclick="CloseSettings()"></button>
       <div id="settingsContent">
@@ -53,6 +53,15 @@
     </div>
     <div id="lockList"></div>
     <script>
+      function removeAll(){
+        document.getElementById("Refresh").classList.add("loading");
+        eel.removeAll();
+      }
+      function LoadingFinished(){
+        document.getElementById("Refresh").classList.remove("loading");
+      }
+      eel.expose(LoadingFinished);
+
       lastChanged = "True";
       function ToggleSwitches(value){
           lastChanged = value;

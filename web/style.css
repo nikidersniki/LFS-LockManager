@@ -102,7 +102,7 @@ body{
     border-radius: 4px;
 }
 #listHeader{
-    width: 90%;
+    width: 80%;
     font-family: fat;
     background-color: var(--bg2);
     display:flex;
@@ -126,6 +126,9 @@ body{
     height: 25px;
     width: 25px;
     margin-top: 9px;
+}
+.loading{
+  background-image: url(https://upload.wikimedia.org/wikipedia/commons/a/ad/YouTube_loading_symbol_3_%28transparent%29.gif) !important;
 }
 #sbsbar{
     display: flex;
@@ -353,3 +356,10 @@ body{
   .checkbox-wrapper-7 .tgl-ios:checked + .tgl-btn:active:after {
     margin-left: -0.8em;
   }
+#RemoveAll{
+  font-size: 11px;
+  padding-top:0px;
+  padding-bottom:0px;
+  height: 25px;
+  margin-top: 9px;
+}
